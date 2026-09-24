@@ -1,0 +1,11 @@
+group,n_legs,judge_calls,judge_tokens,judge_usd_list,jev_usd_one_pass,jev_tokens_one_pass,ratio_judge_over_jev_usd,median_judge_calls_per_item,jev_calls
+legs with API LLM judge (gpt-4o / gpt-4o-mini / claude-haiku-4-5),19,8940.0,9356532.0,18.96,0.302,7178056.0,62.9,2.0,
+legs with local HF judge / classifier,5,1171.0,522804.0,,0.09,2141668.0,,,
+legs with rule / logprob scorer (no judge),20,,,,0.362,8623164.0,,,
+"all Jev calls actually made (all runs, excl. duplicate dirs)",44,,,18.96,2.268,53997864.0,,,23384.0
+r1: 19 API-judge legs; judges at list price; Jev full battery (= original 63x),19,,,18.96,0.3015,,62.9,,
+r1: 19 API-judge legs; judges at list price; Jev single generic question,19,,,18.96,0.1504,,126.1,,
+r1: 19 API-judge legs; judges at GPT-4o-mini price; Jev full battery,19,,,1.815,0.3015,,6.0,,
+r1: 19 API-judge legs; judges at GPT-4o-mini price; Jev single generic question,19,,,1.815,0.1504,,12.1,,
+"r1: 24 judge legs (API + local, local tokens are lower bounds); GPT-4o-mini price; Jev full battery",24,,,1.894,0.3915,,4.8,,
+"r1: 24 judge legs (API + local, local tokens are lower bounds); GPT-4o-mini price; Jev single generic question",24,,,1.894,0.1828,,10.4,,

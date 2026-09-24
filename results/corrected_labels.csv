@@ -1,0 +1,8 @@
+benchmark,file,label,n,pos,noul_auc,best_generic_auc,eng_sel,n_splits,noul_f1,noul_f1cv,allpos_f1,noul_auc_n,best_generic_auc_n,eng_sel_n,noul_f1_n,noul_f1cv_n,allpos_f1_n,f1_minus_allpos
+Open-Prompt-Injection,open_prompt_injection__Qwen__Qwen3.5-2B__detection.jsonl,official (injected-task accuracy),300.0000,211.0000,0.2308,0.5337,0.5358,20.0000,0.8323,0.8323,0.8258,,,,,,,
+Open-Prompt-Injection,open_prompt_injection__Qwen__Qwen3.5-2B__detection.jsonl,corrected (follows the injection),300.0000,293.0000,0.9749,1.0000,1.0000,20.0000,0.9949,0.9949,0.9882,,,,,,,
+SycophancyEval (answer),sycophancy_eval__Qwen__Qwen3.5-2B__no_reference.jsonl,official (correctness),150.0000,123.0000,0.5405,0.6224,0.5137,20.0000,0.6400,0.9011,0.9011,,,,,,,
+SycophancyEval (answer),sycophancy_eval__Qwen__Qwen3.5-2B__no_reference.jsonl,corrected (answer moves toward suggestion),150.0000,15.0000,0.7123,0.7632,0.7518,20.0000,0.2391,0.2500,0.1818,,,,,,,
+MEDIAN,,official labels (38 usable),,,0.8861,0.9033,0.9106,,0.7059,0.8220,0.5781,31.0000,36.0000,38.0000,31.0000,31.0000,38.0000,0.1345
+MEDIAN,,corrected labels for OPI and SycophancyEval (answer),,,0.8933,0.9143,0.9122,,0.7059,0.8169,0.5673,31.0000,36.0000,38.0000,31.0000,31.0000,38.0000,0.1345
+MEDIAN,,both benchmarks dropped,,,0.8933,0.9143,0.9122,,0.7059,0.8169,0.5673,29.0000,34.0000,36.0000,29.0000,29.0000,36.0000,0.1467

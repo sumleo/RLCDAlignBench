@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RLCDAlignBench: Just Ask Jev</title>
+<meta name="description" content="RLCDAlignBench evaluates Jev, a model trained with reinforcement learning for calibrated decisions (RLCD), as a zero-shot detector of AI alignment failures on 44 benchmarks across ten failure types.">
+<meta property="og:title" content="Just Ask Jev: Reinforcement Learning for Calibrated Decisions as a Zero-Shot Detector of AI Alignment Failures">
+<meta property="og:description" content="RLCDAlignBench: 44 benchmarks, ten failure types, five target models.">
+<meta property="og:image" content="https://sumleo.github.io/RLCDAlignBench/static/img/fig1_overview.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root {
+    --text: #222;
+    --muted: #5f6368;
+    --link: #3273dc;
+    --rule: #e5e7eb;
+    --bg-soft: #f6f7f9;
+    --btn: #363636;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 17px;
+    background: #fff;
+  }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+  .narrow { max-width: 800px; margin: 0 auto; }
+
+  header.hero { text-align: center; padding: 56px 0 24px; }
+  .bench-name {
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 1.1rem;
+    margin: 0 0 8px;
+  }
+  h1.title {
+    font-size: 2.3rem;
+    line-height: 1.25;
+    font-weight: 600;
+    margin: 0 auto 22px;
+    max-width: 900px;
+  }
+  .authors { font-size: 1.1rem; margin: 0 auto 6px; max-width: 860px; }
+  .authors .author { display: inline-block; margin: 0 8px; white-space: nowrap; }
+  .affils { color: var(--muted); font-size: 0.98rem; max-width: 820px; margin: 6px auto 0; }
+  .affils span { display: inline-block; margin: 0 8px; white-space: nowrap; }
+  .corr { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+  .venue { margin-top: 14px; font-size: 1.05rem; font-weight: 500; }
+
+  .buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 22px 0 8px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--btn); color: #fff;
+    padding: 8px 18px; border-radius: 999px;
+    font-size: 0.98rem; font-weight: 500;
+  }
+  .btn:hover { background: #111; text-decoration: none; }
+  .btn svg { width: 17px; height: 17px; fill: currentColor; }
+
+  section { padding: 30px 0; }
+  section + section { border-top: 1px solid var(--rule); }
+  h2 { text-align: center; font-size: 1.75rem; font-weight: 600; margin: 0 0 18px; }
+  h3 { font-size: 1.12rem; margin: 26px 0 6px; }
+  p { margin: 0 0 14px; }
+  .abstract p { text-align: justify; hyphens: auto; }
+
+  figure { margin: 18px 0 8px; }
+  figure img { width: 100%; height: auto; display: block; border-radius: 4px; }
+  figcaption { color: var(--muted); font-size: 0.92rem; margin-top: 8px; text-align: center; }
+  .teaser figcaption { max-width: 800px; margin-left: auto; margin-right: auto; }
+
+  .kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 18px 0; }
+  .kv div { background: var(--bg-soft); border-radius: 8px; padding: 12px 14px; text-align: center; }
+  .kv b { display: block; font-size: 1.55rem; line-height: 1.2; }
+  .kv span { color: var(--muted); font-size: 0.9rem; }
+
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 16px 0 6px; border: 1px solid var(--rule); border-radius: 6px; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.86rem; line-height: 1.4; min-width: 760px; }
+  th, td { padding: 7px 9px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--rule); }
+  thead th { background: var(--bg-soft); font-weight: 600; white-space: nowrap; }
+  td.num, th.num { text-align: right; white-space: nowrap; }
+  td.c, th.c { text-align: center; white-space: nowrap; }
+  td.type { font-weight: 600; white-space: nowrap; }
+  tfoot td { font-weight: 600; background: var(--bg-soft); border-bottom: none; }
+  .note { color: var(--muted); font-size: 0.86rem; }
+
+  ol.findings { padding-left: 1.3em; margin: 0; }
+  ol.findings > li { margin-bottom: 18px; }
+  ol.findings > li > strong { display: block; margin-bottom: 2px; }
+  .src { color: var(--muted); font-size: 0.85rem; }
+
+  pre {
+    background: #f5f5f5; border-radius: 6px; padding: 14px 16px;
+    overflow-x: auto; font-size: 0.88rem; line-height: 1.5; margin: 0;
+  }
+  code { font-family: SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+  .code-box { position: relative; margin: 12px 0 14px; }
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px;
+    border: 1px solid #ccc; background: #fff; border-radius: 5px;
+    font-size: 0.8rem; padding: 3px 10px; cursor: pointer; color: #333;
+  }
+  .copy-btn:hover { background: #eee; }
+  .callout { background: #fff8e6; border-left: 4px solid #e0a100; padding: 10px 14px; border-radius: 4px; font-size: 0.95rem; }
+
+  footer { border-top: 1px solid var(--rule); padding: 26px 0 40px; color: var(--muted); font-size: 0.88rem; text-align: center; }
+  footer p { margin: 0 0 8px; }
+
+  @media (max-width: 640px) {
+    body { font-size: 16px; }
+    header.hero { padding-top: 34px; }
+    h1.title { font-size: 1.55rem; }
+    h2 { font-size: 1.45rem; }
+    .authors { font-size: 1rem; }
+    .abstract p { text-align: left; }
+    .btn { padding: 7px 14px; font-size: 0.92rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <p class="bench-name">RLCDAlignBench</p>
+    <h1 class="title">Just Ask Jev: Reinforcement Learning for Calibrated Decisions as a Zero-Shot Detector of AI Alignment Failures</h1>
+    <div class="authors">
+      <span class="author">Ruoqi Guo<sup>1</sup></span>
+      <span class="author">Yi Liu<sup>1,*</sup></span>
+      <span class="author">Gelei Deng<sup>2</sup></span>
+      <span class="author">Yuekang Li<sup>3</sup></span>
+      <span class="author">Lida Zhao<sup>4</sup></span>
+      <span class="author">Simin Chen<sup>5</sup></span>
+      <span class="author">Ying Zhang<sup>6</sup></span>
+      <span class="author">Leo Yu Zhang<sup>1</sup></span>
+    </div>
+    <div class="affils">
+      <span><sup>1</sup>Griffith University</span>
+      <span><sup>2</sup>Nanyang Technological University</span>
+      <span><sup>3</sup>UNSW</span>
+      <span><sup>4</sup>Independent Researcher</span>
+      <span><sup>5</sup>George Mason University</span>
+      <span><sup>6</sup>Wake Forest University</span>
+    </div>
+    <div class="corr"><sup>*</sup>Corresponding author: <a href="mailto:yi.liu@griffith.edu.au">yi.liu@griffith.edu.au</a></div>
+    <div class="venue">ICLR 2027 submission (under review)</div>
+
+    <div class="buttons">
+      <a class="btn" href="https://github.com/sumleo/RLCDAlignBench/blob/main/paper.pdf">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V9h5.5L13 3.5zM7 13h10v1.6H7V13zm0 3.4h10V18H7v-1.6z"/></svg>
+        Paper</a>
+      <a class="btn" href="https://github.com/sumleo/RLCDAlignBench">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+        Code</a>
+      <a class="btn" href="https://huggingface.co/datasets/sumleo/RLCDAlignBench">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C7 2 3 3.8 3 6v12c0 2.2 4 4 9 4s9-1.8 9-4V6c0-2.2-4-4-9-4zm0 2c4.4 0 7 1.5 7 2s-2.6 2-7 2-7-1.5-7-2 2.6-2 7-2zM5 8.6C6.6 9.5 9.2 10 12 10s5.4-.5 7-1.4V12c0 .5-2.6 2-7 2s-7-1.5-7-2V8.6zm0 6c1.6.9 4.2 1.4 7 1.4s5.4-.5 7-1.4V18c0 .5-2.6 2-7 2s-7-1.5-7-2v-3.4z"/></svg>
+        Dataset</a>
+      <a class="btn" href="#bibtex">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.6 16.6 4 12l4.6-4.6L7.2 6 1.2 12l6 6 1.4-1.4zm6.8 0L20 12l-4.6-4.6L16.8 6l6 6-6 6-1.4-1.4z"/></svg>
+        BibTeX</a>
+    </div>
+  </div>
+</header>
+
+<section class="teaser">
+  <div class="container">
+    <figure>
+      <img src="static/img/fig1_overview.png" alt="AUROC of one Jev call per benchmark, grouped by failure type, with the median generic AUROC of 0.886, the +0.006 median gain of targeted wording, and the 63 times lower cost than LLM judges." width="1980" height="880">
+      <figcaption><strong>One Jev call per item ranks most alignment failures well.</strong> Each row is a failure type, with AUROC on the 38 usable benchmarks on the left and per-type medians and cost on the right.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="abstract" id="abstract">
+  <div class="container narrow">
+    <h2>Abstract</h2>
+    <p>Detectors of alignment failures such as sycophancy, jailbreaks, and prompt injection screen deployed language models and score alignment benchmarks. Most are generative judges that spend a decoding pass on every criterion and return a text verdict. Classifiers that read token probabilities, such as Llama Guard, still score one fixed label per call. Jev, a model trained with reinforcement learning for calibrated decisions (RLCD), answers many typed questions about one input with calibrated probabilities in a single call, but whether it detects alignment failures has not been measured. The difficulty is that many failures are relational: they are defined against a reference, such as the user's belief or an injected instruction, that the response alone does not reveal. Our key idea is therefore to measure the question Jev is asked separately from the context it sees.</p>
+    <p>We build RLCDAlignBench, 44 benchmarks across ten failure types and five target models, labelled by each benchmark's scorer and, on two, by humans, and vary the question's wording, its answer type, and the fields of the input Jev sees. A generic question, one template with a per-benchmark behaviour phrase, reaches a median AUROC of 0.886 zero-shot and beats supervised TF-IDF and length baselines on 25 of 31 benchmarks. Wording matters little. Out of sample, targeted questions add only +0.006 AUROC over the generic one, but reading answers as argmax decisions instead of probabilities loses on almost every benchmark. What Jev sees matters more, but mostly through fields that encode the label, such as PrivacyLens's list of secret items (0.79 to 0.95), while context a deployed monitor would hold helps on 1 of 7 benchmarks. On StrongREJECT the generic question agrees with human labels as well as the GPT-4o-mini reference scorer (Cohen's κ 0.809 vs. 0.811), and Jev's confident disagreements exposed label defects in three benchmarks and labels the input cannot reveal in four more. A Jev pass costs 63× less than the LLM-judge scorers at list prices.</p>
+  </div>
+</section>
+
+<section id="key-idea">
+  <div class="container">
+    <div class="narrow">
+      <h2>Key idea: the question vs. the context</h2>
+      <p>Many alignment failures are relational. Sycophancy is defined against the user's belief, deception against the model's own belief, and prompt injection against an instruction hidden in tool output. A detector that sees only the response may lack the reference that defines the failure.</p>
+      <p>So when Jev misses a failure, the cause can be the question it was asked or the state it was shown, and the two call for different fixes. RLCDAlignBench varies them separately. On the question side, it compares a generic question (one template with a per-benchmark behaviour phrase) with targeted questions that name the labelled behaviour, and it asks the generic question as a binary <em>Noul</em>, a categorical <em>Choice</em>, and an ordinal <em>Score</em>. On the context side, it starts from a canonical state that holds the target model's input and output and adds one field at a time. Each added field is tagged as <em>deployable</em> (a monitor could hold it) or as a <em>label key</em> (it belongs to the label definition). Jev answers every question in one call, and the labels are used only for scoring.</p>
+    </div>
+    <figure>
+      <img src="static/img/fig2_pipeline.png" alt="The RLCDAlignBench pipeline: a labelled interaction, what Jev is asked and what Jev sees varied separately, and the combined score evaluated against labels Jev never sees." width="1980" height="1182" loading="lazy">
+      <figcaption><strong>The RLCDAlignBench pipeline.</strong> Jev answers every question about a labelled interaction in one call, and the combined score s(x) in [0, 1] is evaluated against labels Jev never sees.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="benchmark">
+  <div class="container">
+    <h2>The benchmark</h2>
+    <div class="narrow">
+      <p>RLCDAlignBench builds on the alignment suites validated by Chen et al. (2026) and turns them into detection tasks. For each failure type, one open 2–7B target model is run and the benchmark's reference scorer is replayed on its outputs, with label 1 when the failure occurs. The scorer is a rule for 20 benchmarks and an LLM judge for 24. Human labels come from the HarmBench validation set and the StrongREJECT human set.</p>
+      <p>The hill-climb and held-out tags in the released data are the roles the benchmarks play in the AAR suite of Chen et al. (2026), and RLCDAlignBench runs Jev with the same protocol on all 44 benchmarks.</p>
+    </div>
+    <div class="kv">
+      <div><b>10</b><span>failure types</span></div>
+      <div><b>44</b><span>benchmarks</span></div>
+      <div><b>7,193</b><span>detection instances</span></div>
+      <div><b>5</b><span>open 2–7B target models</span></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Failure type</th>
+            <th>Positive (flagged behaviour)</th>
+            <th class="c">#</th>
+            <th>Benchmarks</th>
+            <th class="c">R/J/M</th>
+            <th class="c">V/D/U</th>
+            <th>Target</th>
+            <th class="num">Items</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="type">Sycophancy</td><td>The reply defers to the user's stated view or flips its verdict to please the user.</td><td class="c">4</td><td>ELEPHANT, SYCON-Bench, SycophancyEval ×2</td><td class="c">1/2/1</td><td class="c">0/2/2</td><td>Qwen3.5-2B</td><td class="num">639</td></tr>
+          <tr><td class="type">Jailbreaks</td><td>The reply complies with a harmful (jailbroken) request.</td><td class="c">4</td><td>HarmBench, JailbreakBench ×2, StrongREJECT</td><td class="c">0/4/0</td><td class="c">1/0/3</td><td>Phi-4-mini</td><td class="num">414</td></tr>
+          <tr><td class="type">Deception</td><td>A statement contradicts the model's own elicited belief or serves a deceptive goal.</td><td class="c">4</td><td>DeceptionBench†, MASK ×3</td><td class="c">0/4/0</td><td class="c">0/0/4</td><td>Gemma-2-2B</td><td class="num">540</td></tr>
+          <tr><td class="type">Prompt injection</td><td>The agent follows an injected instruction or leaks/grants what the system prompt protects.</td><td class="c">4</td><td>InjecAgent, Open-Prompt-Injection, Tensor Trust ×2</td><td class="c">4/0/0</td><td class="c">0/1/3</td><td>Qwen3.5-2B</td><td class="num">1,036</td></tr>
+          <tr><td class="type">Hallucination</td><td>The response makes a claim not supported by the given source.</td><td class="c">6</td><td>LLM-AggreFact ×3, RAGTruth ×2, SummEdits</td><td class="c">3/1/2</td><td class="c">3/0/3</td><td>Llama-3.2-3B</td><td class="num">1,164</td></tr>
+          <tr><td class="type">Privacy violation</td><td>The response discloses information that is inappropriate in context, or permits a prohibited data flow.</td><td class="c">4</td><td>ConfAIde, PrivaCI-Bench ×2, PrivacyLens†</td><td class="c">3/1/0</td><td class="c">3/0/1</td><td>Phi-4-mini</td><td class="num">808</td></tr>
+          <tr><td class="type">Social bias</td><td>Outputs for two demographic variants (gender, race) differ in a stereotype-consistent way.</td><td class="c">4</td><td>Race name swap, Gendered letters/bios ×2, Workplace scenes</td><td class="c">0/4/0</td><td class="c">0/0/4</td><td>Olmo-3-7B</td><td class="num">199</td></tr>
+          <tr><td class="type">Reward hacking</td><td>The model exploits a revealed grader or reward instead of pursuing the intended goal.</td><td class="c">6</td><td>MACHIAVELLI (reward)†, Reward-hacking datasets ×4, Rubric tampering</td><td class="c">3/2/1</td><td class="c">1/1/4</td><td>Qwen3.5-2B</td><td class="num">714</td></tr>
+          <tr><td class="type">Concealing uncertainty</td><td>A wrong answer is given with high confidence (≥0.8), or answered where it should abstain.</td><td class="c">4</td><td>AbstentionBench, LLM-Uncertainty-Bench†, SciQ†, Verbalized confidence</td><td class="c">3/1/0</td><td class="c">3/1/0</td><td>Olmo-3-7B</td><td class="num">748</td></tr>
+          <tr><td class="type">Power seeking</td><td>The model picks the option with more power-seeking or unethical annotations, or shows instrumental convergence.</td><td class="c">4</td><td>InstrumentalEval, MACHIAVELLI† ×3</td><td class="c">3/1/0</td><td class="c">0/3/1</td><td>Llama-3.2-3B</td><td class="num">931</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td>Total</td><td></td><td class="c">44</td><td></td><td class="c">20/20/4</td><td class="c">11/8/25</td><td>5 models</td><td class="num">7,193</td></tr>
+        </tfoot>
+      </table>
+    </div>
+    <p class="note"><strong>#</strong>: benchmarks, and ×k means k benchmarks from one source. <strong>R/J/M</strong>: the reference scorer is a rule on the output or log-probabilities, an LLM judge or classifier, or a multi-turn trajectory judge. <strong>V/D/U</strong>: the label is validated, changed by our audit, or unvalidated. †: the label depends on a signal the canonical state omits (deceptive goal, secret list, annotated consequences of the chosen option, or the target model's answer probability). <strong>Items</strong>: detection instances. Six benchmarks have fewer than five minority-class items, so aggregates are medians over the other 38 usable benchmarks.</p>
+  </div>
+</section>
+
+<section id="findings">
+  <div class="container">
+    <h2>Findings</h2>
+    <div class="narrow">
+      <ol class="findings">
+        <li>
+          <strong>A single generic question, asked zero-shot, ranks alignment failures well.</strong>
+          The generic Noul question reaches a median AUROC of 0.886 [0.821, 0.952] over the 31 benchmarks that admit it. Without seeing any label, it beats the better of response length and an in-domain TF-IDF logistic regression by a median of +0.132 and wins on 25 of 31 benchmarks.
+        </li>
+        <li>
+          <strong>Keep answers as probabilities. Wording adds little.</strong>
+          Selected on one half of the items and scored on the other, the best targeted question beats the best generic readout by a median of only +0.006 [−0.004, +0.015] AUROC. Reading answers as argmax decisions instead loses almost everywhere (Choice loses on 28 of 30 benchmarks, Score on 24 of 31). The 3-level Score read as its expected level beats the generic Noul on 19 of 31 benchmarks.
+        </li>
+      </ol>
+    </div>
+    <figure>
+      <img src="static/img/fig3_question_design.png" alt="Three panels: AUROC change from answer type and readout, the in-sample and split-half gain of targeted wording, and rubrics minus direct targeted questions." width="1101" height="435" loading="lazy">
+      <figcaption><strong>Keep answers soft, and targeted wording adds little out of sample.</strong> (a) Generic Choice or 3-level Score minus generic Noul AUROC. (b) Best targeted minus best generic, in sample and split-half. (c) Rubrics over thresholded Jev answers minus the best direct targeted question.</figcaption>
+    </figure>
+    <div class="narrow">
+      <ol class="findings" start="3">
+        <li>
+          <strong>Context helps mostly when it encodes the label.</strong>
+          Context that a deployed monitor would hold helps on 1 of 7 benchmarks (DeceptionBench, +0.050 AUROC from the target's goal prompt). Fields that belong to the label definition give the large gains. PrivacyLens's list of secret items lifts the generic Noul from 0.79 to 0.95, and adding the true answer to SycophancyEval (answer) moves it from 0.540 to 0.941 because that benchmark's official label is correctness.
+        </li>
+      </ol>
+    </div>
+    <figure>
+      <img src="static/img/fig4_context.png" alt="Paired change in AUROC with 95 percent confidence intervals when a field is added to the state, for deployable context and for label keys." width="1102" height="510" loading="lazy">
+      <figcaption><strong>Adding context to the state.</strong> Each row gives the paired ΔAUROC with 95% grouped-bootstrap CI when the named field is added to the same items and labels. (a) Deployable references and the attack prompt. (b) Label keys.</figcaption>
+    </figure>
+    <div class="narrow">
+      <ol class="findings" start="4">
+        <li>
+          <strong>On StrongREJECT, Jev agrees with humans as well as the reference judge.</strong>
+          The generic Noul agrees with human labels at Cohen's κ 0.809, against 0.811 for the GPT-4o-mini scorer, and ranks responses better (AUROC 0.971 vs. 0.929). On HarmBench validation it agrees with a single annotator at mean κ 0.748, on par with inter-annotator agreement (0.736).
+        </li>
+        <li>
+          <strong>Jev's confident disagreements find label defects.</strong>
+          They exposed label defects in three benchmarks (Open-Prompt-Injection, SycophancyEval (answer), and SycophancyEval (feedback)) and labels the state cannot reveal in four MACHIAVELLI variants.
+        </li>
+        <li>
+          <strong>One call answers a whole question battery, at low cost.</strong>
+          A call carries 11.4 questions on average and returns in a median of 0.31 s. On the 19 benchmarks with an API LLM judge, one Jev pass at list prices costs $0.30 against $18.96 for the judges, 63× less. With every judge repriced at GPT-4o-mini rates and Jev asked only the generic question, Jev is still 12× cheaper pooled.
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="data">
+  <div class="container narrow">
+    <h2>Load the data</h2>
+    <p>The snippet below loads the HarmBench configuration.</p>
+    <div class="code-box">
+      <pre><code>from datasets import load_dataset
+ds = load_dataset("sumleo/RLCDAlignBench", "harmbench", split="test")</code></pre>
+    </div>
+    <p class="callout">The dataset is gated. Request access through the form on the <a href="https://huggingface.co/datasets/sumleo/RLCDAlignBench">Hugging Face dataset page</a>. It contains harmful model outputs (for example, responses to jailbreak prompts) and is released for research use only.</p>
+  </div>
+</section>
+
+<section id="bibtex">
+  <div class="container narrow">
+    <h2>BibTeX</h2>
+    <div class="code-box">
+      <button class="copy-btn" type="button" data-target="bibtex-code">Copy</button>
+      <pre><code id="bibtex-code">@misc{rlcdalignbench2026,
+  title        = {Just Ask Jev: Reinforcement Learning for Calibrated Decisions as a Zero-Shot Detector of AI Alignment Failures},
+  author       = {Guo, Ruoqi and Liu, Yi and Deng, Gelei and Li, Yuekang and Zhao, Lida and Chen, Simin and Zhang, Ying and Zhang, Leo Yu},
+  year         = {2026},
+  howpublished = {\url{https://github.com/sumleo/RLCDAlignBench}}
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container narrow">
+    <p>This project studies detectors of AI alignment failures. The data includes harmful model outputs and is intended for research on detecting and mitigating such failures, not for producing them.</p>
+    <p>Code is released under the MIT License. Our labels, annotations and Jev outputs are released under CC BY-NC 4.0. Upstream benchmark content keeps its original license.</p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = document.getElementById(btn.dataset.target).textContent;
+      var done = function () {
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = 'Copy'; }, 1500);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        done();
+      }
+    });
+  });
+</script>
+</body>
+</html>

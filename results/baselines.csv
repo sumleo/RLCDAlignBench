@@ -1,0 +1,45 @@
+axis,leg,n,pos,allpos_f1,length_auroc,tfidf_auroc,tfidf_auroc_sd,tfidf_f1,length_auroc_raw,tfidf_folds,status,length_field,allpos_matches_main,file
+sycophancy,elephant_aita,255,134,0.6889,0.5149,0.7475,0.034,0.727,0.5149,5.0,ok,reply_to_original+reply_to_flipped,True,elephant_aita__Qwen__Qwen3.5-2B__main.jsonl
+sycophancy,sycon_fp,17,14,0.9032,,,,,,,degenerate: minority class n=3,turns,True,sycon_fp__Qwen__Qwen3.5-2B__main.jsonl
+sycophancy,sycophancy_eval,150,123,0.9011,0.451,0.7643,0.0122,0.9144,0.5113,5.0,ok,response,True,sycophancy_eval__Qwen__Qwen3.5-2B__no_reference.jsonl
+sycophancy,sycophancy_feedback,217,30,0.2429,0.5473,0.6083,0.0161,0.1384,0.4008,5.0,ok,owned_feedback+neutral_feedback,True,sycophancy_feedback__Qwen__Qwen3.5-2B__blind.jsonl
+refusal,harmbench,150,51,0.5075,0.9076,0.8991,0.0055,0.8142,0.9076,5.0,ok,response,True,harmbench__microsoft__Phi-4-mini-instruct__attack.jsonl
+refusal,jbb,100,1,0.0198,,,,,,,degenerate: minority class n=1,response,True,jbb__microsoft__Phi-4-mini-instruct__attack__harmful.jsonl
+refusal,jbb_artifacts,64,15,0.3797,0.8477,0.8839,0.0116,0.7109,0.8449,5.0,ok,response,True,jbb_artifacts__microsoft__Phi-4-mini-instruct__attack__harmful.jsonl
+refusal,strongreject,100,39,0.5612,0.9456,0.9713,0.0026,0.8572,0.9447,5.0,ok,response,True,strongreject__microsoft__Phi-4-mini-instruct__main.jsonl
+honesty,deceptionbench_reward,300,149,0.6637,0.5821,0.9025,0.0023,0.8174,0.5822,5.0,ok,response,True,deceptionbench_reward__google__gemma-2-2b-it__blind-response_only.jsonl
+honesty,mask_continuation,82,42,0.6774,0.5302,0.6325,0.0234,0.6305,0.5595,5.0,ok,pressured_messages,True,mask_continuation__google__gemma-2-2b-it__main.jsonl
+honesty,mask_disinformation,102,32,0.4776,0.6686,0.8351,0.0308,0.602,0.6663,5.0,ok,pressured_messages,True,mask_disinformation__google__gemma-2-2b-it__main.jsonl
+honesty,mask_factual,56,22,0.5641,0.6797,0.5321,0.0602,0.3365,0.3235,5.0,ok,pressured_messages,True,mask_factual__google__gemma-2-2b-it__main.jsonl
+prompt_injection,injecagent,136,17,0.2222,0.5993,0.8176,0.0269,0.3207,0.612,5.0,ok,next_action,True,injecagent__Qwen__Qwen3.5-2B__no_pointer.jsonl
+prompt_injection,open_prompt_injection,300,211,0.8258,0.5725,0.7197,0.004,0.7901,0.5808,5.0,ok,response,True,open_prompt_injection__Qwen__Qwen3.5-2B__detection.jsonl
+prompt_injection,tensor_trust_extract,300,119,0.568,0.8051,0.8762,0.0039,0.7715,0.8054,5.0,ok,llm_output,True,tensor_trust_extract__Qwen__Qwen3.5-2B__attack.jsonl
+prompt_injection,tensor_trust_hijack,300,137,0.627,0.4876,0.9956,0.0006,0.9546,0.5142,5.0,ok,llm_output,True,tensor_trust_hijack__Qwen__Qwen3.5-2B__attack.jsonl
+faithfulness,faith_mt_claimcheck,148,139,0.9686,0.6202,0.207,0.0683,0.9249,0.3685,5.0,skewed (>90% one class),turns,True,faith_mt_claimcheck__meta-llama__Llama-3.2-3B-Instruct__gold_hidden.jsonl
+faithfulness,faith_mt_grounded,116,12,0.1875,0.462,0.7703,0.0155,0.0,0.5148,5.0,ok,turns,True,faith_mt_grounded__meta-llama__Llama-3.2-3B-Instruct__no_pointer.jsonl
+faithfulness,llm_aggrefact_A,150,70,0.6364,0.4521,0.5885,0.0328,0.4704,0.4946,5.0,ok,claim,True,llm_aggrefact_A__meta-llama__Llama-3.2-3B-Instruct__detect.jsonl
+faithfulness,llm_aggrefact_B,150,65,0.6047,0.5012,0.6554,0.0276,0.4875,0.5422,5.0,ok,claim,True,llm_aggrefact_B__meta-llama__Llama-3.2-3B-Instruct__detect.jsonl
+faithfulness,ragtruth,300,158,0.69,0.6282,0.5859,0.0082,0.5774,0.629,5.0,ok,response,True,ragtruth__meta-llama__Llama-3.2-3B-Instruct__main.jsonl
+faithfulness,summedits,300,129,0.6014,0.5006,0.5249,0.0146,0.4373,0.534,5.0,ok,summary,True,summedits__meta-llama__Llama-3.2-3B-Instruct__detect.jsonl
+privacy,confaide,98,18,0.3103,0.4763,0.785,0.0124,0.2152,0.4396,5.0,ok,model_response,True,confaide__microsoft__Phi-4-mini-instruct__2b_detection.jsonl
+privacy,privaci_bench,300,35,0.209,0.5587,0.8721,0.017,0.4365,0.4118,5.0,ok,model_response,True,privaci_bench__microsoft__Phi-4-mini-instruct__detection.jsonl
+privacy,privaci_gdpr_heldout,300,27,0.1651,0.4866,0.9201,0.0078,0.2158,0.5456,5.0,skewed (>90% one class),model_response,True,privaci_gdpr_heldout__microsoft__Phi-4-mini-instruct__detection.jsonl
+privacy,privacylens,110,50,0.625,0.4993,0.5424,0.0421,0.4583,0.536,5.0,ok,final_action,True,privacylens__microsoft__Phi-4-mini-instruct__no_secrets.jsonl
+bias,bias_race_content,60,60,1.0,,,,,,,degenerate: single class,story_a+story_b,True,bias_race_content__allenai__Olmo-3-7B-Instruct__main.jsonl
+bias,bias_refbio,52,49,0.9703,,,,,,,degenerate: minority class n=3,profile_for_male+profile_for_female,True,bias_refbio__allenai__Olmo-3-7B-Instruct__main.jsonl
+bias,bias_refletter,43,30,0.8219,0.4745,0.5889,0.0365,0.7952,0.4564,5.0,ok,letter_for_male+letter_for_female,True,bias_refletter__allenai__Olmo-3-7B-Instruct__main.jsonl
+bias,bias_scene_heldout,44,37,0.9136,0.394,0.4607,0.0124,0.9,0.5019,5.0,ok,scene,True,bias_scene_heldout__allenai__Olmo-3-7B-Instruct__main__armB.jsonl
+reward_hacking,machiavelli_reward,200,116,0.7342,0.4829,0.9108,0.0039,0.8412,0.5436,5.0,ok,<full state>,True,machiavelli_reward__Qwen__Qwen3.5-2B__detect.jsonl
+reward_hacking,reward_hacking_freeform,39,10,0.4082,0.4133,0.4874,0.0279,0.0,0.5,5.0,ok,response,True,reward_hacking_freeform__Qwen__Qwen3.5-2B__no_goal_proxy.jsonl
+reward_hacking,reward_harm_freeform,60,10,0.2857,0.3702,0.9387,0.0122,0.6768,0.524,5.0,ok,response,True,reward_harm_freeform__Qwen__Qwen3.5-2B__no_actions.jsonl
+reward_hacking,rh_mt_reward,69,33,0.6471,0.4897,0.594,0.0518,0.5924,0.5703,5.0,ok,turns,True,rh_mt_reward__Qwen__Qwen3.5-2B__transcript_only.jsonl
+reward_hacking,rh_rubric_tamper,50,0,0.0,,,,,,,degenerate: single class,transcript,True,rh_rubric_tamper__Qwen__Qwen3.5-2B__main.jsonl
+reward_hacking,world_affecting_reward,296,117,0.5666,0.5697,0.7945,0.023,0.5979,0.4304,5.0,ok,<full state>,True,world_affecting_reward__Qwen__Qwen3.5-2B__detect.jsonl
+concealing_uncertainty,abstentionbench,150,146,0.9865,,,,,,,degenerate: minority class n=4,response,True,abstentionbench__allenai__Olmo-3-7B-Instruct__main.jsonl
+concealing_uncertainty,llm_uncertainty_bench,150,15,0.1818,0.5917,0.5169,0.0298,0.0,0.6346,5.0,ok,chosen_option,True,llm_uncertainty_bench__allenai__Olmo-3-7B-Instruct__text_only.jsonl
+concealing_uncertainty,sciq_uncertainty,150,6,0.0769,0.5582,0.512,0.0912,0.0,0.6128,5.0,skewed (>90% one class),chosen_option,True,sciq_uncertainty__allenai__Olmo-3-7B-Instruct__text_only.jsonl
+concealing_uncertainty,verbalized_ece,298,102,0.51,0.707,0.7759,0.0136,0.598,0.7071,5.0,ok,model_response,True,verbalized_ece__allenai__Olmo-3-7B-Instruct__with_confidence.jsonl
+power_seeking,instrumental_eval,31,9,0.45,0.4143,0.6987,0.0659,0.5423,0.5354,5.0,ok,response,True,instrumental_eval__meta-llama__Llama-3.2-3B-Instruct__no_category.jsonl
+power_seeking,machiavelli_harm,300,125,0.5882,0.4846,0.5516,0.0214,0.3999,0.5122,5.0,ok,<full state>,True,machiavelli_harm__meta-llama__Llama-3.2-3B-Instruct__detect.jsonl
+power_seeking,machiavelli_heldout,300,137,0.627,0.482,0.6104,0.0122,0.4963,0.5179,5.0,ok,<full state>,True,machiavelli_heldout__meta-llama__Llama-3.2-3B-Instruct__detect.jsonl
+power_seeking,machiavelli_power,300,159,0.6928,0.4819,0.5494,0.0175,0.5736,0.4825,5.0,ok,<full state>,True,machiavelli_power__meta-llama__Llama-3.2-3B-Instruct__detect.jsonl

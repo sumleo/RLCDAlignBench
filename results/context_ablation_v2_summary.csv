@@ -1,0 +1,39 @@
+subset,selection,n_pairs,n_benchmarks,ci_above_zero,ci_below_zero,median_d_auroc,pairs_ci_above_zero
+v1 (old pool) ref_status=absent,naive_noul,4,3,3,0,0.1363,sycophancy_eval(no_reference) +0.400; privacylens(no_secrets) +0.159; privacylens_all(no_secrets) +0.113
+v1 (old pool) ref_status=absent,jev_sym_best,10,6,6,0,0.0462,sycophancy_eval(no_reference) +0.361; privacylens(no_secrets) +0.157; privacylens_all(no_secrets) +0.101; llm_uncertainty_bench(with_confidence) +0.037; verbalized_ece(with_confidence) +0.055; verbalized_ece(answer_only) +0.091
+v2 (label-key strategies removed) ref_status=absent,naive_noul,4,3,3,0,0.1363,sycophancy_eval(no_reference) +0.400; privacylens(no_secrets) +0.159; privacylens_all(no_secrets) +0.113
+v2 (label-key strategies removed) ref_status=absent,jev_sym_best,10,6,6,0,0.0462,sycophancy_eval(no_reference) +0.361; privacylens(no_secrets) +0.157; privacylens_all(no_secrets) +0.101; llm_uncertainty_bench(with_confidence) +0.037; verbalized_ece(with_confidence) +0.055; verbalized_ece(answer_only) +0.091
+v1 (old pool) ref_status=derivable,naive_noul,6,6,1,0,0.0524,faith_mt_claimcheck(gold_hidden) +0.177
+v1 (old pool) ref_status=derivable,jev_sym_best,6,6,1,0,0.0069,confaide_tier3(3_detection) +0.027
+v2 (label-key strategies removed) ref_status=derivable,naive_noul,6,6,1,0,0.0524,faith_mt_claimcheck(gold_hidden) +0.177
+v2 (label-key strategies removed) ref_status=derivable,jev_sym_best,6,6,2,0,0.0149,faith_mt_claimcheck(gold_hidden) +0.260; confaide_tier3(3_detection) +0.027
+v1 (old pool) ref_status=present,naive_noul,6,6,1,0,0.0004,open_prompt_injection(detection) +0.063
+v1 (old pool) ref_status=present,jev_sym_best,6,6,0,0,0.0008,
+v2 (label-key strategies removed) ref_status=present,naive_noul,6,6,1,0,0.0004,open_prompt_injection(detection) +0.063
+v2 (label-key strategies removed) ref_status=present,jev_sym_best,6,6,1,0,0.0014,open_prompt_injection(detection) +0.174
+v1 (old pool) ref_status=auxiliary,naive_noul,4,4,1,0,0.0264,deceptionbench_reward(blind-response_only) +0.050
+v1 (old pool) ref_status=auxiliary,jev_sym_best,4,4,1,0,0.0133,deceptionbench_reward(blind-response_only) +0.034
+v2 (label-key strategies removed) ref_status=auxiliary,naive_noul,4,4,1,0,0.0264,deceptionbench_reward(blind-response_only) +0.050
+v2 (label-key strategies removed) ref_status=auxiliary,jev_sym_best,4,4,1,0,0.0133,deceptionbench_reward(blind-response_only) +0.034
+v2 tag=deployable (all reference pairs),naive_noul,9,8,3,0,0.0349,deceptionbench_reward(blind-response_only) +0.050; privacylens(no_secrets) +0.159; privacylens_all(no_secrets) +0.113
+v2 tag=deployable (all reference pairs),jev_sym_best,9,8,3,0,0.0057,deceptionbench_reward(blind-response_only) +0.034; privacylens(no_secrets) +0.157; privacylens_all(no_secrets) +0.101
+v2 tag=label key (all reference pairs),naive_noul,11,11,3,0,0.0031,sycophancy_eval(no_reference) +0.400; open_prompt_injection(detection) +0.063; faith_mt_claimcheck(gold_hidden) +0.177
+v2 tag=label key (all reference pairs),jev_sym_best,17,14,7,0,0.0252,sycophancy_eval(no_reference) +0.361; open_prompt_injection(detection) +0.174; faith_mt_claimcheck(gold_hidden) +0.260; confaide_tier3(3_detection) +0.027; llm_uncertainty_bench(with_confidence) +0.037; verbalized_ece(with_confidence) +0.055; verbalized_ece(answer_only) +0.091
+v2 collapsed (one pair per distinct benchmark/field),naive_noul,19,19,5,0,0.0201,sycophancy_eval(no_reference) +0.400; deceptionbench_reward(blind-response_only) +0.050; open_prompt_injection(detection) +0.063; faith_mt_claimcheck(gold_hidden) +0.177; privacylens(no_secrets) +0.159
+v2 collapsed (one pair per distinct benchmark/field),jev_sym_best,22,22,7,0,0.0097,sycophancy_eval(no_reference) +0.361; deceptionbench_reward(blind-response_only) +0.034; open_prompt_injection(detection) +0.174; faith_mt_claimcheck(gold_hidden) +0.260; confaide_tier3(3_detection) +0.027; privacylens(no_secrets) +0.157; verbalized_ece(with_confidence) +0.055
+"v2 collapsed, ceiling pairs dropped (A and B >= 0.995)",naive_noul,18,18,5,0,0.0275,sycophancy_eval(no_reference) +0.400; deceptionbench_reward(blind-response_only) +0.050; open_prompt_injection(detection) +0.063; faith_mt_claimcheck(gold_hidden) +0.177; privacylens(no_secrets) +0.159
+"v2 collapsed, ceiling pairs dropped (A and B >= 0.995)",jev_sym_best,19,19,7,0,0.0161,sycophancy_eval(no_reference) +0.361; deceptionbench_reward(blind-response_only) +0.034; open_prompt_injection(detection) +0.174; faith_mt_claimcheck(gold_hidden) +0.260; confaide_tier3(3_detection) +0.027; privacylens(no_secrets) +0.157; verbalized_ece(with_confidence) +0.055
+"v2 collapsed, no ceiling, tag=deployable",naive_noul,8,8,2,0,0.0275,deceptionbench_reward(blind-response_only) +0.050; privacylens(no_secrets) +0.159
+"v2 collapsed, no ceiling, tag=deployable",jev_sym_best,7,7,2,0,0.0057,deceptionbench_reward(blind-response_only) +0.034; privacylens(no_secrets) +0.157
+"v2 collapsed, no ceiling, tag=label key",naive_noul,10,10,3,0,0.0280,sycophancy_eval(no_reference) +0.400; open_prompt_injection(detection) +0.063; faith_mt_claimcheck(gold_hidden) +0.177
+"v2 collapsed, no ceiling, tag=label key",jev_sym_best,12,12,5,0,0.0260,sycophancy_eval(no_reference) +0.361; open_prompt_injection(detection) +0.174; faith_mt_claimcheck(gold_hidden) +0.260; confaide_tier3(3_detection) +0.027; verbalized_ece(with_confidence) +0.055
+"v2 collapsed, no ceiling, ref_status=absent",naive_noul,3,3,2,0,0.1592,sycophancy_eval(no_reference) +0.400; privacylens(no_secrets) +0.159
+"v2 collapsed, no ceiling, ref_status=absent",jev_sym_best,6,6,3,0,0.0401,sycophancy_eval(no_reference) +0.361; privacylens(no_secrets) +0.157; verbalized_ece(with_confidence) +0.055
+"v2 collapsed, no ceiling, ref_status=derivable",naive_noul,5,5,1,0,0.0699,faith_mt_claimcheck(gold_hidden) +0.177
+"v2 collapsed, no ceiling, ref_status=derivable",jev_sym_best,5,5,2,0,0.0161,faith_mt_claimcheck(gold_hidden) +0.260; confaide_tier3(3_detection) +0.027
+"v2 collapsed, no ceiling, ref_status=present",naive_noul,6,6,1,0,0.0004,open_prompt_injection(detection) +0.063
+"v2 collapsed, no ceiling, ref_status=present",jev_sym_best,4,4,1,0,0.0031,open_prompt_injection(detection) +0.174
+"v2 collapsed, no ceiling, ref_status=auxiliary",naive_noul,4,4,1,0,0.0264,deceptionbench_reward(blind-response_only) +0.050
+"v2 collapsed, no ceiling, ref_status=auxiliary",jev_sym_best,4,4,1,0,0.0133,deceptionbench_reward(blind-response_only) +0.034
+v2 attack prompt shown (jbb excluded),naive_noul,5,5,0,1,-0.0031,
+v2 attack prompt shown (jbb excluded),jev_sym_best,5,5,0,0,-0.0008,

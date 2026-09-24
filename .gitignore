@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+.DS_Store
+# local data downloads and rebuilt layouts
+hf/
+work/
+release/
+code/samples/
+code/results/
+aar_repo/
