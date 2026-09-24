@@ -8,7 +8,8 @@ The output is the developer-facing layout documented in the dataset card:
 
     benchmarks.csv                                   44-row index (copied from data/benchmarks.csv)
     data/benchmarks/<failure_type>/<benchmark>.jsonl canonical detection instances (7,193 rows)
-    data/all.parquet                                 the same 7,193 rows in one table (state/meta as JSON)
+    data/all.jsonl                                   the same 7,193 rows in one file (state/meta as JSON strings)
+    data/index.jsonl                                 benchmarks.csv as JSONL (backs the `index` config)
     data/human/<name>.jsonl                          human-labelled sets (StrongREJECT, HarmBench)
     data/variants/<benchmark>/<variant>.jsonl        every input view used in the paper (ablations, oracle, ...)
     jev/responses/<benchmark>/<variant>/<battery>.jsonl   Jev's raw per-question answers
@@ -18,7 +19,7 @@ The output is the developer-facing layout documented in the dataset card:
     file_map.csv                                     original path -> release path, sha256 (for the legacy layout)
 
 Every original file is copied byte-for-byte somewhere under the release. The only derived files are
-data/benchmarks/*, data/human/*, data/all.parquet, and the CSV tables.
+data/benchmarks/*, data/human/*, data/all.jsonl, data/index.jsonl, and the CSV tables.
 """
 from __future__ import annotations
 
@@ -156,11 +157,12 @@ def main() -> None:
                 write_jsonl(out / "data/human" / f"{benchmark}{'__' + variant if variant != 'source_gold' else ''}.jsonl", kept)
 
     pd.DataFrame(variants).sort_values(["benchmark", "variant"]).to_csv(out / "variants.csv", index=False)
-    flat = pd.DataFrame([{**{k: v for k, v in r.items() if k not in ("state", "meta")},
-                          "state": json.dumps(r["state"], ensure_ascii=False),
-                          "meta": json.dumps(r["meta"], ensure_ascii=False)} for r in all_rows])
-    flat.to_parquet(out / "data/all.parquet", index=False)
-    assert len(flat) == int(bench.n.sum()), (len(flat), int(bench.n.sum()))
+    # one file for all benchmarks: state keys differ per benchmark, so state and meta are JSON strings here
+    write_jsonl(out / "data/all.jsonl", [{**{k: v for k, v in r.items() if k not in ("state", "meta")},
+                                          "state": json.dumps(r["state"], ensure_ascii=False),
+                                          "meta": json.dumps(r["meta"], ensure_ascii=False)} for r in all_rows])
+    write_jsonl(out / "data/index.jsonl", json.loads(bench.to_json(orient="records")))
+    assert len(all_rows) == int(bench.n.sum()), (len(all_rows), int(bench.n.sum()))
 
     # ---- Jev responses and metrics -------------------------------------------------------------
     seen: dict[tuple, tuple[str, str]] = {}

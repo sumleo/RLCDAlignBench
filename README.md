@@ -92,14 +92,14 @@ provenance/                                        target-model generations, ref
 | Results summary | [`code/make_results_summary.py`](code/make_results_summary.py) |
 | Release tools | [`tools/build_release.py`](tools/build_release.py), [`tools/legacy_layout.py`](tools/legacy_layout.py) |
 
-The code needs Python 3.10 or newer (the paper used 3.12) and only the standard library. The release tools also need `pandas` and `pyarrow`.
+The code needs Python 3.10 or newer (the paper used 3.12) and only the standard library. The release tools also need `pandas`.
 
 ### Recompute the metrics offline
 
 This sends no requests and needs no keys. Every metric is recomputed from Jev's cached answers.
 
 ```bash
-pip install -U "huggingface_hub[cli]" pandas pyarrow
+pip install -U "huggingface_hub[cli]" pandas
 huggingface-cli login                                   # after your access request is approved
 huggingface-cli download sumleo/RLCDAlignBench --repo-type dataset --local-dir hf
 
