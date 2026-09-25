@@ -1,6 +1,6 @@
 # Just Ask Jev: Reinforcement Learning for Calibrated Decisions as a Zero-Shot Detector of AI Alignment Failures
 
-[![ICLR 2027](https://img.shields.io/badge/ICLR%202027-under%20review-blue)](paper.pdf)
+[![arXiv](https://img.shields.io/badge/arXiv-2609.29429-b31b1b)](https://arxiv.org/abs/2609.29429)
 [![Project page](https://img.shields.io/badge/Project-page-green)](https://sumleo.github.io/RLCDAlignBench/)
 [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-RLCDAlignBench-yellow)](https://huggingface.co/datasets/sumleo/RLCDAlignBench)
 [![Code license: MIT](https://img.shields.io/badge/code-MIT-lightgrey)](LICENSE)
@@ -21,11 +21,14 @@ Out of sample, question wording adds little. Reading answers as probabilities in
 ## Citation
 
 ```bibtex
-@misc{rlcdalignbench2026,
-  title        = {Just Ask Jev: Reinforcement Learning for Calibrated Decisions as a Zero-Shot Detector of AI Alignment Failures},
-  author       = {Ruoqi Guo and Yi Liu and Gelei Deng and Yuekang Li and Lida Zhao and Simin Chen and Ying Zhang and Leo Yu Zhang},
-  year         = {2026},
-  howpublished = {\url{https://github.com/sumleo/RLCDAlignBench}}
+@misc{guo2026justaskjevreinforcement,
+      title={Just Ask Jev: Reinforcement Learning for Calibrated Decisions as a Zero-Shot Detector of AI Alignment Failures}, 
+      author={Ruoqi Guo and Yi Liu and Gelei Deng and Yuekang Li and Lida Zhao and Yutao Wu and Simin Chen and Ying Zhang and Leo Yu Zhang},
+      year={2026},
+      eprint={2609.29429},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2609.29429}, 
 }
 ```
 

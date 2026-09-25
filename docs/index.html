@@ -138,8 +138,9 @@
       <span class="author">Gelei Deng<sup>2</sup></span>
       <span class="author">Yuekang Li<sup>3</sup></span>
       <span class="author">Lida Zhao<sup>4</sup></span>
-      <span class="author">Simin Chen<sup>5</sup></span>
-      <span class="author">Ying Zhang<sup>6</sup></span>
+      <span class="author">Yutao Wu<sup>5</sup></span>
+      <span class="author">Simin Chen<sup>6</sup></span>
+      <span class="author">Ying Zhang<sup>7</sup></span>
       <span class="author">Leo Yu Zhang<sup>1</sup></span>
     </div>
     <div class="affils">
@@ -147,14 +148,15 @@
       <span><sup>2</sup>Nanyang Technological University</span>
       <span><sup>3</sup>UNSW</span>
       <span><sup>4</sup>Independent Researcher</span>
-      <span><sup>5</sup>George Mason University</span>
-      <span><sup>6</sup>Wake Forest University</span>
+      <span><sup>5</sup>Deakin University</span>
+      <span><sup>6</sup>George Mason University</span>
+      <span><sup>7</sup>Wake Forest University</span>
     </div>
     <div class="corr"><sup>*</sup>Corresponding author: <a href="mailto:yi.liu@griffith.edu.au">yi.liu@griffith.edu.au</a></div>
-    <div class="venue">ICLR 2027 submission (under review)</div>
+    <div class="venue">arXiv:2609.29429</div>
 
     <div class="buttons">
-      <a class="btn" href="https://github.com/sumleo/RLCDAlignBench/blob/main/paper.pdf">
+      <a class="btn" href="https://arxiv.org/abs/2609.29429">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V9h5.5L13 3.5zM7 13h10v1.6H7V13zm0 3.4h10V18H7v-1.6z"/></svg>
         Paper</a>
       <a class="btn" href="https://github.com/sumleo/RLCDAlignBench">
@@ -182,8 +184,8 @@
 <section class="abstract" id="abstract">
   <div class="container narrow">
     <h2>Abstract</h2>
-    <p>Detectors of alignment failures such as sycophancy, jailbreaks, and prompt injection screen deployed language models and score alignment benchmarks. Most are generative judges that spend a decoding pass on every criterion and return a text verdict. Classifiers that read token probabilities, such as Llama Guard, still score one fixed label per call. Jev, a model trained with reinforcement learning for calibrated decisions (RLCD), answers many typed questions about one input with calibrated probabilities in a single call, but whether it detects alignment failures has not been measured. The difficulty is that many failures are relational: they are defined against a reference, such as the user's belief or an injected instruction, that the response alone does not reveal. Our key idea is therefore to measure the question Jev is asked separately from the context it sees.</p>
-    <p>We build RLCDAlignBench, 44 benchmarks across ten failure types and five target models, labelled by each benchmark's scorer and, on two, by humans, and vary the question's wording, its answer type, and the fields of the input Jev sees. A generic question, one template with a per-benchmark behaviour phrase, reaches a median AUROC of 0.886 zero-shot and beats supervised TF-IDF and length baselines on 25 of 31 benchmarks. Wording matters little. Out of sample, targeted questions add only +0.006 AUROC over the generic one, but reading answers as argmax decisions instead of probabilities loses on almost every benchmark. What Jev sees matters more, but mostly through fields that encode the label, such as PrivacyLens's list of secret items (0.79 to 0.95), while context a deployed monitor would hold helps on 1 of 7 benchmarks. On StrongREJECT the generic question agrees with human labels as well as the GPT-4o-mini reference scorer (Cohen's κ 0.809 vs. 0.811), and Jev's confident disagreements exposed label defects in three benchmarks and labels the input cannot reveal in four more. A Jev pass costs 63× less than the LLM-judge scorers at list prices.</p>
+    <p>Detectors of alignment failures screen deployed language models and score alignment benchmarks. Most are generative judges that spend a decoding pass on every criterion, and classifiers that read token probabilities, such as Llama Guard, still score one fixed label per call. Jev, a model trained with reinforcement learning for calibrated decisions (RLCD), answers many typed questions about one input with calibrated probabilities in a single call. Whether it detects alignment failures has not been measured.</p>
+    <p>We present RLCDAlignBench, which benchmarks Jev on ten alignment failures: sycophancy, jailbreaks, deception, prompt injection, hallucination, privacy violation, social bias, reward hacking, concealing uncertainty, and power seeking. It spans 44 benchmarks and five target models, labelled by each benchmark's scorer and, on two, by humans. Many of these failures are relational, defined against a reference, such as the user's belief or an injected instruction, that the response alone does not reveal. Our key idea is therefore to vary what Jev is asked separately from what it sees: the question's wording and answer type on one side, the fields of the input on the other. A single generic question reaches a median AUROC of 0.886 zero-shot and beats supervised baselines on most benchmarks. Question wording matters little, while context matters more, mostly through fields that encode the label. Jev matches the reference scorer's agreement with human labels, surfaces label defects in existing benchmarks, and costs 63× less than LLM-judge scorers.</p>
   </div>
 </section>
 
@@ -317,11 +319,14 @@ ds = load_dataset("sumleo/RLCDAlignBench", "harmbench", split="test")</code></pr
     <h2>BibTeX</h2>
     <div class="code-box">
       <button class="copy-btn" type="button" data-target="bibtex-code">Copy</button>
-      <pre><code id="bibtex-code">@misc{rlcdalignbench2026,
-  title        = {Just Ask Jev: Reinforcement Learning for Calibrated Decisions as a Zero-Shot Detector of AI Alignment Failures},
-  author       = {Guo, Ruoqi and Liu, Yi and Deng, Gelei and Li, Yuekang and Zhao, Lida and Chen, Simin and Zhang, Ying and Zhang, Leo Yu},
-  year         = {2026},
-  howpublished = {\url{https://github.com/sumleo/RLCDAlignBench}}
+      <pre><code id="bibtex-code">@misc{guo2026justaskjevreinforcement,
+      title={Just Ask Jev: Reinforcement Learning for Calibrated Decisions as a Zero-Shot Detector of AI Alignment Failures}, 
+      author={Ruoqi Guo and Yi Liu and Gelei Deng and Yuekang Li and Lida Zhao and Yutao Wu and Simin Chen and Ying Zhang and Leo Yu Zhang},
+      year={2026},
+      eprint={2609.29429},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2609.29429}, 
 }</code></pre>
     </div>
   </div>
